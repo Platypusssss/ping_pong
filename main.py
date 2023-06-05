@@ -7,18 +7,19 @@
 
 
 
+
 from pygame import *
 from random import randint
 
 class GameSprite(sprite.Sprite):
      def __init__(self, player_image, player_x, player_y, size_x, size_y, player_speed):
          super(). __init__()
-
          self.image = transform.scale(image.load(player_image), (size_x, size_y))
          self.speed = player_speed
          self.rect = self.image.get_rect()
          self.rect.x = player_x
          self.rect.y = player_y
+         
      def reset(self):
          window.blit(self.image, (self.rect.x, self.rect.y))
 
@@ -27,6 +28,7 @@ class Player(GameSprite):
         keys_passed = key.get_pressed()
         if keys_passed[K_UP] and self.rect.y > 5:
             self.rect.y -= self.speed
+
         if keys_passed[K_DOWN] and self.rect.y < win_height -80:
             self.rect.y += self.speed
     
@@ -34,12 +36,14 @@ class Player(GameSprite):
         keys_passed = key.get_pressed()
         if keys_passed[K_w] and self.rect.y > 5:
             self.rect.y -= self.speed
+
         if keys_passed[K_s] and self.rect.y < win_height -80:
             self.rect.y += self.speed
 
 
 class Ball(GameSprite):
     pass
+
 
 
 win_width = 700
@@ -51,7 +55,6 @@ goal = 10
 
 background_colour = (135,206,235)
 
-
 window = display.set_mode((win_width, win_height))
 
 game = True
@@ -59,10 +62,11 @@ finish = False
 clock = time.Clock()
 FPS = 60
 
-display.set_caption('Название окна')
+display.set_caption('PING - PONG')
 
-player_left = Player('platform.png', 0, 0, 30, 100, 1)
-player_right = Player('platform.png', 0, 0, 30, 100, 1)
+player_left = Player('platform.png', 0, 0, 30, 130, 1)
+player_right = Player('platform.png', 667, 1, 30, 130, 1)
+ball = Ball('ball.png', 200, 200, 50, 50, 6)
 
 """
 mixer.init()
@@ -81,6 +85,8 @@ while game:
     player_right.update_right()
     player_left.reset()
     player_right.reset()
-    
+    ball.update()
+    ball.reset()
+
     display.update()
 clock.tick(FPS)
